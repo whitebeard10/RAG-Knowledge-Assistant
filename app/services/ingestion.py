@@ -1,4 +1,5 @@
 import datetime
+import os
 from typing import List
 from langchain_community.document_loaders import PyPDFLoader, TextLoader, UnstructuredMarkdownLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -34,7 +35,7 @@ class IngestionService:
         # Add metadata
         for doc in documents:
             doc.metadata.update({
-                "source": file_path.split("/")[-1],
+                "source": os.path.basename(file_path),
                 "category": category,
                 "ingestion_timestamp": datetime.datetime.now().isoformat(),
                 "page": doc.metadata.get("page", 0)

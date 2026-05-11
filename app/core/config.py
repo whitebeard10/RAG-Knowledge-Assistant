@@ -19,6 +19,8 @@ class Settings(BaseSettings):
     APP_NAME: str = "RAG Knowledge Assistant"
     LOG_LEVEL: str = "INFO"
     DEBUG: bool = False
+    USE_LOCAL_MODELS: bool = True
+    OLLAMA_BASE_URL: str = "http://localhost:11434"
     
     # RAG Settings
     CHUNK_SIZE: int = 512

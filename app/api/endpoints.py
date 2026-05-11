@@ -26,6 +26,9 @@ async def ingest_document(
     file: UploadFile = File(...), 
     category: str = "general"
 ):
+    # Ensure data directory exists
+    os.makedirs("data", exist_ok=True)
+    
     temp_path = f"data/{file.filename}"
     try:
         with open(temp_path, "wb") as buffer:

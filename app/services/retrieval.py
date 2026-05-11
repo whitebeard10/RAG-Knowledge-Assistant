@@ -2,23 +2,29 @@ import time
 from typing import List, Optional
 from pinecone import Pinecone
 from langchain_openai import OpenAIEmbeddings
+from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_pinecone import PineconeVectorStore
 from langchain_community.vectorstores import FAISS
 from app.core.config import settings
 from app.core.logging import logger
 
 class RetrievalService:
-    def __init__(self, use_faiss: bool = False):
-        self.embeddings = OpenAIEmbeddings(
-            openai_api_key=settings.OPENAI_API_KEY,
-            model=settings.EMBEDDING_MODEL,
-            openai_api_base=settings.OPENAI_BASE_URL
-        )
-        self.use_faiss = use_faiss
-        self.pc = Pinecone(api_key=settings.PINECONE_API_KEY)
-        self.index_name = settings.PINECONE_INDEX_NAME
+    def __init__(self, use_faiss: bool = None):
+        if settings.USE_LOCAL_MODELS:
+            logger.info("using_local_embeddings", model="sentence-transformers/all-MiniLM-L6-v2")
+            self.embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+            self.use_faiss = True # Force FAISS if local
+        else:
+            self.embeddings = OpenAIEmbeddings(
+                openai_api_key=settings.OPENAI_API_KEY,
+                model=settings.EMBEDDING_MODEL,
+                openai_api_base=settings.OPENAI_BASE_URL
+            )
+            self.use_faiss = use_faiss if use_faiss is not None else False
         
-        if not use_faiss:
+        if not self.use_faiss:
+            self.pc = Pinecone(api_key=settings.PINECONE_API_KEY)
+            self.index_name = settings.PINECONE_INDEX_NAME
             self.vector_store = PineconeVectorStore(
                 index_name=self.index_name,
                 embedding=self.embeddings,

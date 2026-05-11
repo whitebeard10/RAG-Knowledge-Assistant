@@ -1,6 +1,7 @@
 import time
 from typing import List, Dict, Any
 from langchain_openai import ChatOpenAI
+from langchain_ollama import ChatOllama
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.documents import Document
@@ -9,13 +10,21 @@ from app.core.logging import logger
 
 class LLMService:
     def __init__(self):
-        model_name = "openai/gpt-4o-mini" if settings.OPENAI_BASE_URL else "gpt-4o-mini"
-        self.llm = ChatOpenAI(
-            model=model_name,
-            temperature=0,
-            openai_api_key=settings.OPENAI_API_KEY,
-            openai_api_base=settings.OPENAI_BASE_URL
-        )
+        if settings.USE_LOCAL_MODELS:
+            logger.info("using_local_llm", model="llama3.2")
+            self.llm = ChatOllama(
+                model="llama3.2",
+                base_url=settings.OLLAMA_BASE_URL,
+                temperature=0
+            )
+        else:
+            model_name = "openai/gpt-4o-mini" if settings.OPENAI_BASE_URL else "gpt-4o-mini"
+            self.llm = ChatOpenAI(
+                model=model_name,
+                temperature=0,
+                openai_api_key=settings.OPENAI_API_KEY,
+                openai_api_base=settings.OPENAI_BASE_URL
+            )
         
         self.prompt = ChatPromptTemplate.from_template("""
         You are a highly accurate RAG assistant. Use the provided context to answer the user's question.

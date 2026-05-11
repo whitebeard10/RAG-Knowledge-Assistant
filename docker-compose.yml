@@ -1,0 +1,13 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./data:/app/data
+    restart: always
+
+# Optional: Add Pinecone local emulator if available, but Pinecone is usually cloud-based.
+# We could add a local FAISS-based container if we wanted, but the API handles both.

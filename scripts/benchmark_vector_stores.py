@@ -19,26 +19,16 @@ def benchmark_vector_stores():
     _, _ = faiss_service.search("What is RAG?", top_k=5)
     faiss_latency = time.time() - start
     
-    # Test Pinecone
-    logger.info("benchmarking_pinecone")
-    pinecone_service = RetrievalService(use_faiss=False)
-    # Note: Documents should already be in Pinecone or added here
-    
-    start = time.time()
-    _, _ = pinecone_service.search("What is RAG?", top_k=5)
-    pinecone_latency = time.time() - start
-    
     print("\n--- Vector Store Benchmark ---")
     print(f"FAISS Retrieval Latency: {faiss_latency:.4f}s")
-    print(f"Pinecone Retrieval Latency: {pinecone_latency:.4f}s")
+    print(f"(Pinecone benchmarking skipped in local configuration)")
     
     with open("BENCHMARK_RESULTS.md", "w") as f:
         f.write("# Vector Store Benchmark\n\n")
         f.write("| Vector Store | Latency (s) | Pros | Cons |\n")
         f.write("|--------------|-------------|------|------|\n")
         f.write(f"| FAISS | {faiss_latency:.4f} | Low latency, local | No persistent filtering support, memory bound |\n")
-        f.write(f"| Pinecone | {pinecone_latency:.4f} | Metadata filtering, scalable, persistent | Network overhead |\n")
-        f.write("\n**Conclusion:** Pinecone is preferred for production due to robust metadata filtering and managed scaling.")
+        f.write("| Pinecone | Skipped | Metadata filtering, scalable, persistent | Network overhead |\n")
 
 if __name__ == "__main__":
     benchmark_vector_stores()

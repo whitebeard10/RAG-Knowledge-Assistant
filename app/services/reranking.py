@@ -12,7 +12,7 @@ class RerankingService:
 
     def rerank(self, query: str, documents: List[Document], top_n: int = settings.FINAL_TOP_K) -> List[Document]:
         if not documents:
-            return []
+            return [], 0.0
 
         start_time = time.time()
         

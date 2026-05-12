@@ -24,3 +24,9 @@ python-jose[cryptography]
 passlib[bcrypt]
 pandas
 tqdm
+
+langchain-google-genai
+
+langchain-huggingface
+
+langchain-ollama

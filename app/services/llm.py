@@ -2,6 +2,7 @@ import time
 from typing import List, Dict, Any
 from langchain_openai import ChatOpenAI
 from langchain_ollama import ChatOllama
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.documents import Document
@@ -10,7 +11,14 @@ from app.core.logging import logger
 
 class LLMService:
     def __init__(self):
-        if settings.USE_LOCAL_MODELS:
+        if settings.GEMINI_API_KEY:
+            logger.info("using_gemini_llm", model="gemini-2.5-flash")
+            self.llm = ChatGoogleGenerativeAI(
+                model="gemini-2.5-flash",
+                temperature=0,
+                google_api_key=settings.GEMINI_API_KEY
+            )
+        elif settings.USE_LOCAL_MODELS:
             logger.info("using_local_llm", model="llama3.2")
             self.llm = ChatOllama(
                 model="llama3.2",

@@ -3,9 +3,10 @@ from typing import Optional
 
 class Settings(BaseSettings):
     # API Keys
-    OPENAI_API_KEY: str
+    OPENAI_API_KEY: Optional[str] = None
     OPENAI_BASE_URL: Optional[str] = None
-    PINECONE_API_KEY: str
+    GEMINI_API_KEY: Optional[str] = None
+    PINECONE_API_KEY: Optional[str] = None
     PINECONE_INDEX_NAME: str = "rag-knowledge-assistant"
     PINECONE_ENVIRONMENT: str = "us-east-1-aws"
 

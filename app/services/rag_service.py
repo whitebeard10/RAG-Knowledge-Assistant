@@ -16,13 +16,13 @@ class RAGService:
     async def query(self, query_text: str, filter: Optional[dict] = None) -> Dict[str, Any]:
         overall_start = time.time()
         
-        # 1. Retrieval
+        # 1. grab initial stuff
         initial_docs, retrieval_latency = self.retrieval_service.search(query_text, filter=filter)
         
-        # 2. Reranking
+        # 2. rerank them so the best ones are at the top
         reranked_docs, reranking_latency = self.reranking_service.rerank(query_text, initial_docs)
         
-        # 3. Generation
+        # 3. let the model spit out the final answer
         answer, generation_latency = self.llm_service.generate_response(query_text, reranked_docs)
         
         overall_latency = time.time() - overall_start

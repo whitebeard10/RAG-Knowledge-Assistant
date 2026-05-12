@@ -32,7 +32,7 @@ class IngestionService:
     def process_document(self, file_path: str, category: str = "general") -> List[Document]:
         documents = self.load_document(file_path)
         
-        # Add metadata
+        # shove some metadata in there so we can filter later
         for doc in documents:
             doc.metadata.update({
                 "source": os.path.basename(file_path),

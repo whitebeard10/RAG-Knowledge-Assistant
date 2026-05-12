@@ -13,7 +13,8 @@ async def run_evaluation():
     logger.info("starting_evaluation")
     rag_service = RAGService()
     
-    # Sample evaluation dataset (In a real scenario, this would be loaded from a JSON/CSV)
+    # some hardcoded test data for eval
+    # todo: probably should pull this from a json file later
     eval_questions = [
         "What is the main goal of the RAG Knowledge Assistant?",
         "How does the system handle document reranking?",

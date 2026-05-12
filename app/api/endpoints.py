@@ -36,7 +36,7 @@ async def ingest_document(
         
         chunks_count = await rag_service.ingest_file(temp_path, category)
         
-        # In a real production app, we might want to delete the temp file after processing
+        # keeping the temp file for now, might delete it later in prod
         # os.remove(temp_path)
         
         return {

@@ -23,7 +23,7 @@ class RerankingService:
         # Combine documents with scores
         doc_scores = list(zip(documents, scores))
         
-        # Sort by score descending
+        # sort by score desending so best matches are first
         reranked_docs = sorted(doc_scores, key=lambda x: x[1], reverse=True)
         
         # Take top N

@@ -8,7 +8,7 @@ def benchmark_vector_stores():
         Document(page_content="RAG is a technique to improve LLM accuracy.", metadata={"source": "doc1"}),
         Document(page_content="Vector databases like Pinecone are essential for RAG.", metadata={"source": "doc2"}),
         Document(page_content="FAISS is a fast local library for vector similarity search.", metadata={"source": "doc3"}),
-    ] * 10 # Increase scale for testing
+    ] * 10 # multiply by 10 to give the db somthing to chew on
 
     # Test FAISS
     logger.info("benchmarking_faiss")
